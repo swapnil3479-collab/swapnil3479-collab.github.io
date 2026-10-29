@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}The Honest Shelf{% endblock %}</title>
+<link rel="stylesheet" href="{{ root }}style.css"></head>
+<body><header><a href="{{ root }}index.html">The Honest Shelf</a><span>Balanced, spoiler-free book reviews.</span></header>
+<main>{% block content %}{% endblock %}</main>
+<footer>Book data from Open Library, Google Books and Goodreads.</footer></body></html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid">
+{% for p in posts %}
+<a class="card" href="{{ root }}books/{{ p.slug }}.html">
+  {% if p.cover %}<img src="{{ p.cover }}" alt="Cover of {{ p.title }}" loading="lazy">{% endif %}
+  <h2>{{ p.title }}{% if p.draft %} <em class="draft">DRAFT</em>{% endif %}</h2>
+  <p class="by">{{ p.author }}</p>
+  <p class="stars">{{ "★" * (p.rating|int) }}{{ "☆" * (5 - (p.rating|int)) }}</p>
+</a>
+{% else %}<p>No reviews yet.</p>{% endfor %}
+</div>
+{% endblock %}
