@@ -1,5 +1,9 @@
 {% extends "base.html" %}
-{% block title %}{{ p.title }} review{% endblock %}
+{% block title %}{{ p.title }} by {{ p.author }}: Spoiler-Free Review | {{ site.name }}{% endblock %}
+{% block ogtitle %}{{ p.title }} review (no spoilers){% endblock %}
+{% block twcard %}summary_large_image{% endblock %}
+{% block ogextra %}<meta property="og:type" content="article">{% if p.cover %}<meta property="og:image" content="{{ p.cover }}"><meta name="twitter:image" content="{{ p.cover }}">{% endif %}
+<script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"Review","name":p.title ~ " review","datePublished":p.date|string,"itemReviewed":{"@type":"Book","name":p.title,"author":{"@type":"Person","name":p.author}},"reviewRating":{"@type":"Rating","ratingValue":p.rating,"bestRating":5},"author":{"@type":"Organization","name":site.name}} | tojson }}</script>{% endblock %}
 {% block content %}
 <article>
   <div class="head">

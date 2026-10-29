@@ -1,7 +1,15 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{% block title %}The Honest Shelf{% endblock %}</title>
+<title>{% block title %}{{ site.name }}: {{ site.tagline }}{% endblock %}</title>
+<meta name="description" content="{{ description }}">
+<link rel="canonical" href="{{ page_url }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ root }}feed.xml">
+<meta property="og:site_name" content="{{ site.name }}"><meta property="og:url" content="{{ page_url }}">
+<meta property="og:title" content="{% block ogtitle %}{{ site.name }}{% endblock %}"><meta property="og:description" content="{{ description }}">
+{% block ogextra %}<meta property="og:type" content="website">{% endblock %}
+<meta name="twitter:card" content="{% block twcard %}summary{% endblock %}">
 <link rel="stylesheet" href="{{ root }}style.css"></head>
-<body><header><a href="{{ root }}index.html">The Honest Shelf</a><span>Balanced, spoiler-free book reviews.</span></header>
+<body><header><a href="{{ root }}index.html">{{ site.name }}</a><span>{{ site.tagline }}</span></header>
 <main>{% block content %}{% endblock %}</main>
-<footer>Book data from Open Library, Google Books and Goodreads.</footer></body></html>
+{% if site.newsletter_url %}<section class="subscribe"><p>Get new reviews by email.</p><a class="btn" href="{{ site.newsletter_url }}">Subscribe</a></section>{% endif %}
+<footer><a href="{{ root }}feed.xml">RSS</a> · Book data from Open Library, Google Books and Goodreads.</footer></body></html>
