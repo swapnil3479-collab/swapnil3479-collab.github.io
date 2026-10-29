@@ -9,7 +9,7 @@
 {% block ogextra %}<meta property="og:type" content="website">{% endblock %}
 <meta name="twitter:card" content="{% block twcard %}summary{% endblock %}">
 <link rel="stylesheet" href="{{ root }}style.css"></head>
-<body><header><a href="{{ root }}index.html">{{ site.name }}</a><span>{{ site.tagline }}</span></header>
+<body><header><a href="{{ root }}index.html">{{ site.name }}</a><span>{{ site.tagline }}</span><form class="hsearch" action="{{ root }}index.html" method="get"><input type="search" name="q" placeholder="Search reviews" aria-label="Search reviews"></form></header>
 <main>{% block content %}{% endblock %}</main>
 {% if site.newsletter_url %}<section class="subscribe"><p>Get new reviews by email.</p><a class="btn" href="{{ site.newsletter_url }}">Subscribe</a></section>{% endif %}
 <footer><a href="{{ root }}feed.xml">RSS</a> · Book data from Open Library, Google Books and Goodreads.</footer></body></html>

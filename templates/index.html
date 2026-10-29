@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+<input id="q" type="search" placeholder="Search by title, author, genre or series" aria-label="Search reviews" autocomplete="off">
+<p id="none" hidden>No reviews match your search.</p>
 <div class="grid">
 {% for p in posts %}
-<a class="card" href="{{ root }}books/{{ p.slug }}.html">
+<a class="card" href="{{ root }}books/{{ p.slug }}.html" data-s="{{ (p.title ~ ' ' ~ p.author ~ ' ' ~ (p.genres|join(' ') if p.genres else '') ~ ' ' ~ (p.series or ''))|lower }}">
   {% if p.cover %}<img src="{{ p.cover }}" alt="Cover of {{ p.title }}" loading="lazy">{% endif %}
   <h2>{{ p.title }}{% if p.draft %} <em class="draft">DRAFT</em>{% endif %}</h2>
   <p class="by">{{ p.author }}</p>
@@ -10,4 +12,11 @@
 </a>
 {% else %}<p>No reviews yet.</p>{% endfor %}
 </div>
+<script>
+(function(){var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),none=document.getElementById('none');
+function run(){var t=q.value.toLowerCase().trim().split(/\s+/).filter(Boolean),n=0;
+cards.forEach(function(c){var ok=t.every(function(w){return c.dataset.s.indexOf(w)>-1});c.hidden=!ok;if(ok)n++});none.hidden=n>0}
+q.addEventListener('input',run);
+try{var p=new URLSearchParams(location.search).get('q');if(p){q.value=p;run()}}catch(e){}})();
+</script>
 {% endblock %}

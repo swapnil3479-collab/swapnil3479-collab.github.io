@@ -9,25 +9,27 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="style.css"></head>
-<body><header><a href="index.html">The Honest Shelf</a><span>Balanced, spoiler-free book reviews.</span></header>
+<body><header><a href="index.html">The Honest Shelf</a><span>Balanced, spoiler-free book reviews.</span><form class="hsearch" action="index.html" method="get"><input type="search" name="q" placeholder="Search reviews" aria-label="Search reviews"></form></header>
 <main>
+<input id="q" type="search" placeholder="Search by title, author, genre or series" aria-label="Search reviews" autocomplete="off">
+<p id="none" hidden>No reviews match your search.</p>
 <div class="grid">
 
-<a class="card" href="books/crown-of-midnight.html">
+<a class="card" href="books/crown-of-midnight.html" data-s="crown of midnight sarah j. maas fantasy young adult throne of glass #2">
   <img src="https://covers.openlibrary.org/b/id/14348029-L.jpg" alt="Cover of Crown of Midnight" loading="lazy">
   <h2>Crown of Midnight</h2>
   <p class="by">Sarah J. Maas</p>
   <p class="stars">★★★★☆</p>
 </a>
 
-<a class="card" href="books/throne-of-glass.html">
+<a class="card" href="books/throne-of-glass.html" data-s="throne of glass sarah j. maas fantasy young adult throne of glass #1">
   <img src="https://covers.openlibrary.org/b/id/13312488-L.jpg" alt="Cover of Throne of Glass" loading="lazy">
   <h2>Throne of Glass</h2>
   <p class="by">Sarah J. Maas</p>
   <p class="stars">★★★☆☆</p>
 </a>
 
-<a class="card" href="books/the-assassins-blade.html">
+<a class="card" href="books/the-assassins-blade.html" data-s="the assassin&#39;s blade sarah j. maas fantasy young adult throne of glass #0.1-0.5">
   <img src="https://covers.openlibrary.org/b/id/7794980-L.jpg" alt="Cover of The Assassin&#39;s Blade" loading="lazy">
   <h2>The Assassin&#39;s Blade</h2>
   <p class="by">Sarah J. Maas</p>
@@ -35,6 +37,13 @@
 </a>
 
 </div>
+<script>
+(function(){var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),none=document.getElementById('none');
+function run(){var t=q.value.toLowerCase().trim().split(/\s+/).filter(Boolean),n=0;
+cards.forEach(function(c){var ok=t.every(function(w){return c.dataset.s.indexOf(w)>-1});c.hidden=!ok;if(ok)n++});none.hidden=n>0}
+q.addEventListener('input',run);
+try{var p=new URLSearchParams(location.search).get('q');if(p){q.value=p;run()}}catch(e){}})();
+</script>
 </main>
 
 <footer><a href="feed.xml">RSS</a> · Book data from Open Library, Google Books and Goodreads.</footer></body></html>
