@@ -19,13 +19,19 @@ SITE = {
 }
 
 
-def describe(p):
-    """Meta description: first paragraph of the Summary section, else the first paragraph, trimmed to ~155 chars."""
+def summary_text(p, limit):
+    """First paragraph of the Summary section (else first paragraph) as plain text, trimmed to `limit` chars."""
     m = re.search(r"<h2>Summary.*?</h2>\s*<p>(.*?)</p>", p["html"], re.S) or re.search(r"<p>(.*?)</p>", p["html"], re.S)
     text = html.unescape(re.sub(r"<[^>]+>", "", m.group(1))) if m else p["title"]
     text = " ".join(text.split())
-    if len(text) > 155:
-        text = text[:152].rsplit(" ", 1)[0] + "..."
+    if len(text) > limit:
+        text = text[: limit - 3].rsplit(" ", 1)[0] + "..."
+    return text
+
+
+def describe(p):
+    """Meta description for search engines."""
+    text = summary_text(p, 155)
     return f"{p['title']} by {p['author']}: spoiler-free summary and honest review. {text}"[:300]
 
 
@@ -36,6 +42,9 @@ def load(path, draft):
     meta["draft"] = draft
     meta["date"] = str(meta["date"])
     meta["description"] = meta.get("description") or describe(meta)
+    meta["tip"] = summary_text(meta, 140)
+    meta["genres"] = meta.get("genres") or ["Other"]
+    meta["tags"] = meta.get("tags") or []
     return meta
 
 
@@ -55,8 +64,11 @@ def main():
     env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape())
     env.filters["xmlstr"] = lambda s: html.escape(str(s), quote=True)
     base = SITE["url"]
+    genres = sorted({p["genres"][0] for p in posts})  # a book is filed under its first genre
+    groups = [(g, [p for p in posts if p["genres"][0] == g]) for g in genres]
+    tags = sorted({t for p in posts for t in p["tags"]}, key=str.lower)
     (OUT / "index.html").write_text(env.get_template("index.html").render(
-        posts=posts, root="", site=SITE, page_url=f"{base}/", description=f"{SITE['name']}: {SITE['tagline']} Reviews of fantasy and fiction with honest ratings and no plot twists given away."))
+        posts=posts, groups=groups, genres=genres, tags=tags, root="", site=SITE, page_url=f"{base}/", description=f"{SITE['name']}: {SITE['tagline']} Reviews of fantasy and fiction with honest ratings and no plot twists given away."))
     for p in posts:
         (OUT / "books" / f"{p['slug']}.html").write_text(env.get_template("post.html").render(
             p=p, root="../", site=SITE, page_url=f"{base}/books/{p['slug']}.html", description=p["description"]))

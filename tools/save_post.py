@@ -1,7 +1,7 @@
 """Save a post as Markdown with front matter.
 
 Usage: save_post.py --meta meta.json --body body.md [--publish]
-meta.json keys: title, author, slug (optional), year, genres[], rating (1-5, our review),
+meta.json keys: title, author, slug (optional), year, genres[] (FIRST one is the section it is filed under on the home page), tags[] (short, Title Case, e.g. Assassins, Prequel), rating (1-5, our review),
   goodreads_rating, goodreads_url, cover, pages, tagline
 Rule: the first 10 posts are ALWAYS saved as drafts; --publish only works after that.
 """

@@ -6,13 +6,19 @@ year: 2012
 pages: 432
 genres:
 - Fantasy
-- Young Adult
 rating: 3
 goodreads_rating: 4.18
 goodreads_url: https://www.goodreads.com/book/show/7896527.Throne_of_Glass__Throne_of_Glass___1_
 cover: https://covers.openlibrary.org/b/id/13312488-L.jpg
 series: 'Throne of Glass #1'
 date: '2026-10-29'
+tags:
+- Young Adult
+- Assassins
+- Tournament
+- Court Intrigue
+- Romance
+- Series Starter
 ---
 
 ## Summary (spoiler-free)

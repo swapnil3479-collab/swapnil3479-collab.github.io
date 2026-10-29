@@ -1,22 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
-<input id="q" type="search" placeholder="Search by title, author, genre or series" aria-label="Search reviews" autocomplete="off">
-<p id="none" hidden>No reviews match your search.</p>
-<div class="grid">
-{% for p in posts %}
-<a class="card" href="{{ root }}books/{{ p.slug }}.html" data-s="{{ (p.title ~ ' ' ~ p.author ~ ' ' ~ (p.genres|join(' ') if p.genres else '') ~ ' ' ~ (p.series or ''))|lower }}">
-  {% if p.cover %}<img src="{{ p.cover }}" alt="Cover of {{ p.title }}" loading="lazy">{% endif %}
-  <h2>{{ p.title }}{% if p.draft %} <em class="draft">DRAFT</em>{% endif %}</h2>
-  <p class="by">{{ p.author }}</p>
-  <p class="stars">{{ "★" * (p.rating|int) }}{{ "☆" * (5 - (p.rating|int)) }}</p>
-</a>
-{% else %}<p>No reviews yet.</p>{% endfor %}
+<input id="q" type="search" placeholder="Search by title, author, genre, tag or series" aria-label="Search reviews" autocomplete="off">
+{% if posts %}
+<div class="chips" id="chips">
+  <button type="button" data-f="" class="on">All</button>
+  {% for g in genres %}<button type="button" data-f="g:{{ g|lower }}">{{ g }}</button>{% endfor %}
+  {% for t in tags %}<button type="button" class="tagbtn" data-f="t:{{ t|lower }}">#{{ t }}</button>{% endfor %}
 </div>
+{% endif %}
+<p id="none" hidden>No reviews match your search.</p>
+{% for g, items in groups %}
+<section class="genre">
+  <h2 class="gh">{{ g }}</h2>
+  <div class="grid">
+  {% for p in items %}
+  <a class="card" href="{{ root }}books/{{ p.slug }}.html"
+     data-g="{{ p.genres|map('lower')|join('|') }}" data-t="|{{ p.tags|map('lower')|join('|') }}|"
+     data-s="{{ (p.title ~ ' ' ~ p.author ~ ' ' ~ p.genres|join(' ') ~ ' ' ~ p.tags|join(' ') ~ ' ' ~ (p.series or ''))|lower }}">
+    {% if p.cover %}<img src="{{ p.cover }}" alt="Cover of {{ p.title }}" loading="lazy">{% endif %}
+    <h3>{{ p.title }}{% if p.draft %} <em class="draft">DRAFT</em>{% endif %}</h3>
+    <p class="by">{{ p.author }}</p>
+    <p class="stars">{{ "★" * (p.rating|int) }}{{ "☆" * (5 - (p.rating|int)) }}</p>
+    <span class="tip" role="tooltip"><strong>{{ p.title }}</strong>{{ p.tip }}<small>Our rating {{ p.rating }}/5{% if p.goodreads_rating %} · Goodreads {{ p.goodreads_rating }}{% endif %}{% if p.pages %} · {{ p.pages }} pages{% endif %}</small></span>
+  </a>
+  {% endfor %}
+  </div>
+</section>
+{% else %}<p>No reviews yet.</p>{% endfor %}
 <script>
-(function(){var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),none=document.getElementById('none');
-function run(){var t=q.value.toLowerCase().trim().split(/\s+/).filter(Boolean),n=0;
-cards.forEach(function(c){var ok=t.every(function(w){return c.dataset.s.indexOf(w)>-1});c.hidden=!ok;if(ok)n++});none.hidden=n>0}
+(function(){
+var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),none=document.getElementById('none'),
+secs=[].slice.call(document.querySelectorAll('.genre')),chips=[].slice.call(document.querySelectorAll('#chips button')),f='';
+function run(){
+  var t=q.value.toLowerCase().trim().split(/\s+/).filter(Boolean),n=0;
+  cards.forEach(function(c){
+    var ok=t.every(function(w){return c.dataset.s.indexOf(w)>-1});
+    if(ok&&f){var k=f.slice(0,2),v=f.slice(2);ok=k==='g:'?('|'+c.dataset.g+'|').indexOf('|'+v+'|')>-1:c.dataset.t.indexOf('|'+v+'|')>-1}
+    c.hidden=!ok;if(ok)n++});
+  secs.forEach(function(s){s.hidden=!s.querySelector('.card:not([hidden])')});
+  none.hidden=n>0;
+  chips.forEach(function(b){b.classList.toggle('on',b.dataset.f===f)});
+}
+chips.forEach(function(b){b.addEventListener('click',function(){f=b.dataset.f;run()})});
 q.addEventListener('input',run);
-try{var p=new URLSearchParams(location.search).get('q');if(p){q.value=p;run()}}catch(e){}})();
+try{var p=new URLSearchParams(location.search);
+  if(p.get('q'))q.value=p.get('q');
+  if(p.get('genre'))f='g:'+p.get('genre').toLowerCase();
+  if(p.get('tag'))f='t:'+p.get('tag').toLowerCase();
+  run()}catch(e){}
+})();
 </script>
 {% endblock %}

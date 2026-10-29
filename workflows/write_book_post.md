@@ -12,7 +12,7 @@ Given a book name, produce a spoiler-free summary and a balanced critical review
 2. **Goodreads:** Goodreads has no public API and its terms forbid scraping. Use WebSearch/WebFetch to read the public Goodreads page for the book (average rating, rating count, common praise and complaints). Record `goodreads_rating` and `goodreads_url`. If it can't be fetched, leave both blank and say so. Never invent a rating.
 3. **Write the body** to `.tmp/<slug>.md` using the structure below.
 4. **Spoiler check (mandatory):** re-read the Summary and Review and confirm no twist, death, betrayal, reveal or ending is stated or hinted. For a sequel, do not spoil earlier books either. Fix, then proceed.
-5. **Write `.tmp/<slug>.json`** metadata (title, author, year, pages, genres, cover, rating 1-5 integer, goodreads_rating, goodreads_url, slug).
+5. **Write `.tmp/<slug>.json`** metadata (title, author, year, pages, genres, tags, cover, rating 1-5 integer, goodreads_rating, goodreads_url, slug). `genres[0]` is the primary genre and the home-page section the book is filed under (use broad names such as Fantasy, Science Fiction, Mystery, Romance, Non-Fiction, Historical Fiction; reuse existing ones so sections stay consistent). `tags` are 3-6 short Title Case descriptors (audience, themes, tropes, format such as Young Adult, Assassins, Prequel, Series Starter); reuse existing tags where they fit. Tags are clickable on review pages and appear as filter buttons on the home page.
 6. **Save:** `.venv/bin/python tools/save_post.py --meta .tmp/<slug>.json --body .tmp/<slug>.md`
 7. Tell the user the draft path and ask for approval or edits.
 

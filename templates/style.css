@@ -17,3 +17,15 @@ article{max-width:680px;margin:auto}article h2{margin-top:2rem}a{color:var(--acc
 #q,.hsearch input{font:inherit;font-size:.95rem;padding:.5rem .8rem;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
 #q{width:100%;margin-bottom:1.2rem}.hsearch{margin-left:auto}.hsearch input{width:11rem;max-width:100%}
 .card[hidden],#none[hidden]{display:none}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
+.chips button{font:inherit;font-size:.8rem;cursor:pointer;background:var(--card);color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:.15rem .8rem}
+.chips button.on{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.chips .tagbtn{font-size:.75rem}
+.gh{font-size:1.3rem;border-bottom:1px solid var(--line);padding-bottom:.3rem;margin:1.8rem 0 1rem}
+.genre[hidden]{display:none}.card h3{font-size:1rem;margin:.6rem 0 .1rem}
+.card{position:relative}
+.tip{position:absolute;left:-14px;bottom:calc(100% - .4rem);width:calc(100% + 28px);min-width:200px;z-index:5;background:var(--fg);color:var(--bg);font-size:.8rem;line-height:1.45;padding:.7rem .8rem;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s}
+.tip strong{display:block;margin-bottom:.2rem}.tip small{display:block;margin-top:.4rem;opacity:.8}
+.card:hover .tip,.card:focus-visible .tip{opacity:1;visibility:visible}
+.tags a{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:0 .7rem;margin:0 .3rem .3rem 0;font-size:.8rem;color:var(--muted);text-decoration:none}
+.tags a:hover{color:var(--accent);border-color:var(--accent)}.tags a.genretag{background:var(--card);color:var(--fg)}

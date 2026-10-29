@@ -13,7 +13,7 @@
       <p class="by">by {{ p.author }}{% if p.year %} · {{ p.year }}{% endif %}{% if p.pages %} · {{ p.pages }} pages{% endif %}</p>
       <p class="stars">{{ "★" * (p.rating|int) }}{{ "☆" * (5 - (p.rating|int)) }} <small>our rating</small></p>
       {% if p.goodreads_rating %}<p class="gr">Goodreads: {{ p.goodreads_rating }}/5{% if p.goodreads_url %} · <a href="{{ p.goodreads_url }}">view</a>{% endif %}</p>{% endif %}
-      {% if p.genres %}<p class="tags">{% for g in p.genres %}<span>{{ g }}</span>{% endfor %}</p>{% endif %}
+      <p class="tags">{% for g in p.genres %}<a class="genretag" href="{{ root }}index.html?genre={{ g|urlencode }}">{{ g }}</a>{% endfor %}{% for t in p.tags %}<a href="{{ root }}index.html?tag={{ t|urlencode }}">#{{ t }}</a>{% endfor %}</p>
     </div>
   </div>
   {{ p.html | safe }}

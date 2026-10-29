@@ -6,13 +6,18 @@ year: 2014
 pages: 438
 genres:
 - Fantasy
-- Young Adult
 rating: 4
 goodreads_rating: 4.2
 goodreads_url: https://www.goodreads.com/book/show/22529351-the-assassin-s-blade
 cover: https://covers.openlibrary.org/b/id/7794980-L.jpg
 series: 'Throne of Glass #0.1-0.5'
 date: '2026-10-29'
+tags:
+- Young Adult
+- Assassins
+- Prequel
+- Novellas
+- Romance
 ---
 
 *A prequel collection in the Throne of Glass series. It reveals nothing about how the main books end, but the best moment to read it is after book two. See the reading-order note below.*
