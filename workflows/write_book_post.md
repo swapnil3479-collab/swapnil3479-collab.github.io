@@ -37,6 +37,8 @@ One short paragraph and the star rating.
 - Balanced means every review names real strengths and real weaknesses; no gushing, no hit pieces.
 - Facts (year, pages, plot setup) come from the tools, not memory. If a book is obscure and sources are thin, say so and ask rather than guess.
 - Don't quote long passages from the book.
+- **Originality:** Use several sources (Open Library, Google Books, Goodreads, Wikipedia, at least one independent review) for facts, structure and general reader sentiment only. Never paste or lightly reword a reviewer's sentences, and don't quote reviews. Cite rating numbers, not text.
+- **Sequels and prequels:** don't reveal earlier books' endings. Publisher blurbs for later books often do, so write the summary from scratch.
 
 ## Approve & publish
 1. User approves a draft: `.venv/bin/python tools/approve_post.py <slug>`
