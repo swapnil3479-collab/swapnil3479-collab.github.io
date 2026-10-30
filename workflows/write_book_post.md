@@ -44,7 +44,8 @@ One short paragraph and the star rating.
 ## Series rules (standing, from the user)
 1. **First book of a series:** the review MUST include a Reading order section. It is generated automatically, not hand-written. Before saving, create `content/series/<series_id>.yml` (copy `throne-of-glass.yml`): series `name`, every main book in publication order under `main` (title + slug), and any prequels/novellas under `extras` with `text` (use `{link}`) and `self_text`. Then set `series` (e.g. "Throne of Glass #1") and `series_id` in the post's metadata JSON. `save_post.py` refuses a series book without a matching series file. Take the book list and the author's suggested order from the sources, not memory.
 2. **Later books in the series:** reviews of any other book in the series just need the same `series_id`. The build links every listed book that has been published, so each new review automatically turns its entry into a link in all earlier reviews on the next deploy. Never hand-edit reading-order links in post bodies, and never skip the deploy after adding a book.
-3. If a new book isn't in the series file yet (e.g. a newly announced title), add it to the yml first.
+3. The home page lists series books in reading order (from the series file; extras use `read_after`), not by publish date. When adding a prequel/novella to a series file, set `read_after` to the slug of the main book it should follow.
+4. If a new book isn't in the series file yet (e.g. a newly announced title), add it to the yml first.
 
 ## Drafts (optional) & publishing
 1. Only if the user asks for a draft: `--draft` saves to `content/drafts/`; later run `.venv/bin/python tools/approve_post.py <slug>` to publish it.

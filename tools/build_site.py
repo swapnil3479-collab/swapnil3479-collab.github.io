@@ -66,6 +66,20 @@ def series_block(env, p, pub):
     return env.get_template("series_block.html").render(s=s, cur=p["slug"], pub=pub, first=first)
 
 
+def reading_position(p, cache={}):
+    """Sort key for the home page: series books follow the series reading order, standalone books go by date (newest first)."""
+    sid = p.get("series_id")
+    if not sid:
+        return (1, "", -int(str(p["date"]).replace("-", "")))
+    if sid not in cache:
+        s = yaml.safe_load((ROOT / "content/series" / f"{sid}.yml").read_text())
+        pos = {b["slug"]: i * 10 for i, b in enumerate(s["main"])}
+        for e in s.get("extras", []):
+            pos[e["slug"]] = pos.get(e.get("read_after"), len(s["main"]) * 10) + 5  # extras sit just after the book they follow
+        cache[sid] = pos
+    return (0, sid, cache[sid].get(p["slug"], 10**6))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--drafts", action="store_true")
@@ -89,7 +103,7 @@ def main():
             block = series_block(env, p, pub)
             p["html"] = p["html"].replace(marker, block + marker, 1) if marker in p["html"] else p["html"] + block
     genres = sorted({p["genres"][0] for p in posts})  # a book is filed under its first genre
-    groups = [(g, [p for p in posts if p["genres"][0] == g]) for g in genres]
+    groups = [(g, sorted([p for p in posts if p["genres"][0] == g], key=reading_position)) for g in genres]
     tags = sorted({t for p in posts for t in p["tags"]}, key=str.lower)
     (OUT / "index.html").write_text(env.get_template("index.html").render(
         posts=posts, groups=groups, genres=genres, tags=tags, root="", site=SITE, page_url=f"{base}/", description=f"{SITE['name']}: {SITE['tagline']} Reviews of fantasy and fiction with honest ratings and no plot twists given away."))
