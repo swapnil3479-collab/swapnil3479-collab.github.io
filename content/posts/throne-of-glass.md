@@ -35,6 +35,20 @@ The weaknesses are real, though, and Goodreads reviewers raise them often. The h
 
 For context, the book averages about 4.18 out of 5 on Goodreads across more than 2.7 million ratings, so most readers enjoy it more than this review does. Much of that goodwill appears to come from the series as a whole, and later books are widely said to be stronger and darker. As a first volume, this one is more of a launch pad than a complete, polished story.
 
+## Reading order
+
+*Throne of Glass* is where the series starts, and it works as a first read. The main books, in the order they were published, are:
+
+1. *Throne of Glass* (this book)
+2. [*Crown of Midnight*](crown-of-midnight.html)
+3. *Heir of Fire*
+4. *Queen of Shadows*
+5. *Empire of Storms*
+6. *Tower of Dawn*
+7. *Kingdom of Ash*
+
+There is also a prequel collection, [*The Assassin's Blade*](the-assassins-blade.html), made up of five novellas set before this book. Even though it happens earlier in the story, the author's suggested order, which most fan guides repeat, is to read it after *Crown of Midnight* and before *Heir of Fire*. Reading it first isn't harmful, but you lose some of the mystery around the heroine, so saving it is the better choice. If you're new, start here with book one.
+
 ## Who should read it
 
 Readers who like fast, plot-driven young adult fantasy with court intrigue and a slow-building romance will have a good time. It also suits anyone who wants an easy entry point into a long series. If you want a gritty, believable assassin story, or prose that is sharp and restrained, you may find it frustrating.
