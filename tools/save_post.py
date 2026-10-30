@@ -2,7 +2,7 @@
 
 Usage: save_post.py --meta meta.json --body body.md [--draft]
 meta.json keys: title, author, slug (optional), year, genres[] (FIRST one is the section it is filed under on the home page), tags[] (short, Title Case, e.g. Assassins, Prequel), rating (1-5, our review),
-  goodreads_rating, goodreads_url, cover, pages, tagline
+  goodreads_rating, goodreads_url, cover, pages, tagline, series, series_id
 Posts publish directly to content/posts/ (the user waived draft approval on 2026-10-30).
 Pass --draft to hold a post back in content/drafts/ instead.
 """
@@ -26,6 +26,8 @@ def main():
     a = ap.parse_args()
     meta = json.loads(Path(a.meta).read_text())
     body = Path(a.body).read_text().strip()
+    if meta.get("series") and not (ROOT / "content/series" / f"{meta.get('series_id')}.yml").exists():
+        sys.exit("Series book: meta needs series_id and content/series/<series_id>.yml (list every main book in order). See workflows/write_book_post.md.")
     meta["slug"] = meta.get("slug") or slugify(meta["title"])
     meta["date"] = meta.get("date") or datetime.date.today().isoformat()
     DRAFTS.mkdir(parents=True, exist_ok=True); POSTS.mkdir(parents=True, exist_ok=True)

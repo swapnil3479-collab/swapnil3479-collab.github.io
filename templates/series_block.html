@@ -1,0 +1,6 @@
+<section class="series"><h2>Reading order</h2>
+<p>The main books in the {{ s.name }} series, in the order they were published, are:</p>
+<ol>{% for b in s.main %}<li>{% if b.slug == cur %}<em>{{ b.title }}</em> (this book){% elif b.slug in pub %}<a href="{{ b.slug }}.html"><em>{{ b.title }}</em></a>{% else %}<em>{{ b.title }}</em>{% endif %}</li>
+{% endfor %}</ol>
+{% for e in s.extras %}<p>{{ e.html }}</p>
+{% endfor %}{% if first and first.slug != cur %}<p>New to the series? Start with <a href="{{ first.slug }}.html"><em>{{ first.title }}</em></a>.</p>{% endif %}</section>

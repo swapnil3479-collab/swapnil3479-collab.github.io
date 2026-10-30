@@ -18,6 +18,7 @@ goodreads_url: https://goodreads.com/book/show/20617636-heir-of-fire
 cover: https://covers.openlibrary.org/b/id/9318480-L.jpg
 series: 'Throne of Glass #3'
 date: '2026-10-30'
+series_id: throne-of-glass
 ---
 
 *This is book three of the Throne of Glass series. Nothing below reveals how books one or two end, but the review assumes you've read them. If you haven't, start with [Throne of Glass](throne-of-glass.html).*
@@ -36,9 +37,6 @@ The cost is pace. The first half is noticeably slow, with long stretches of setu
 
 Goodreads readers rate it about 4.44 out of 5 from over 1.8 million ratings, the highest of the books I have reviewed so far. I think that rating comes from the payoff more than the first half, because the book rewards patience. It is more of a transition than a complete story, but it is a transition that earns what comes next.
 
-## Reading order
-
-*Heir of Fire* is the third main book. If you are following the author's suggested order, read it after the prequel collection [*The Assassin's Blade*](the-assassins-blade.html), which is meant to be read after *Crown of Midnight* and before this book. The full order is *Throne of Glass*, *Crown of Midnight*, *The Assassin's Blade*, *Heir of Fire*, *Queen of Shadows*, *Empire of Storms*, *Tower of Dawn* and *Kingdom of Ash*.
 
 ## Who should read it
 

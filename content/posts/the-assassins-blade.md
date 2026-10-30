@@ -18,6 +18,7 @@ tags:
 - Prequel
 - Novellas
 - Romance
+series_id: throne-of-glass
 ---
 
 *A prequel collection in the Throne of Glass series. It reveals nothing about how the main books end, but the best moment to read it is after book two. See the reading-order note below.*
@@ -36,9 +37,6 @@ The format has downsides. The first two novellas are the slowest and least drama
 
 On Goodreads the collection averages around 4.20 out of 5 from about 1.39 million ratings, a little below *Crown of Midnight* but well above the first book. That feels about right. It is not a standalone masterpiece, but it is a rewarding companion.
 
-## Reading order
-
-Published in 2014, a year after *Crown of Midnight*, the collection is set before *Throne of Glass*. The author's own suggested order, repeated by most fan guides, is to read it after book two and before *Heir of Fire*. Reading it earlier is not harmful, but some of its emotional weight comes from what you already know about the character.
 
 ## Who should read it
 

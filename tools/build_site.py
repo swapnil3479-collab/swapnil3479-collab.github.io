@@ -8,6 +8,7 @@ from email.utils import format_datetime
 from pathlib import Path
 import markdown, yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from markupsafe import Markup, escape
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs"
@@ -48,6 +49,23 @@ def load(path, draft):
     return meta
 
 
+def series_block(env, p, pub):
+    """Reading-order section built from content/series/<series_id>.yml; links only to published books."""
+    path = ROOT / "content/series" / f"{p['series_id']}.yml"
+    if not path.exists():
+        raise SystemExit(f"{p['slug']}: missing series file {path}")
+    s = yaml.safe_load(path.read_text())
+    for e in s.get("extras", []):
+        if e["slug"] == p["slug"]:
+            e["html"] = escape(e["self_text"])
+        elif e["slug"] in pub:
+            e["html"] = Markup(str(escape(e["text"])).replace("{link}", f'<a href="{e["slug"]}.html"><em>{escape(e["title"])}</em></a>'))
+        else:
+            e["html"] = Markup(str(escape(e["text"])).replace("{link}", f'<em>{escape(e["title"])}</em>'))
+    first = s["main"][0] if s["main"][0]["slug"] in pub else None
+    return env.get_template("series_block.html").render(s=s, cur=p["slug"], pub=pub, first=first)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--drafts", action="store_true")
@@ -64,6 +82,12 @@ def main():
     env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape())
     env.filters["xmlstr"] = lambda s: html.escape(str(s), quote=True)
     base = SITE["url"]
+    pub = {p["slug"] for p in posts}
+    marker = "<h2>Who should read it</h2>"
+    for p in posts:
+        if p.get("series_id"):
+            block = series_block(env, p, pub)
+            p["html"] = p["html"].replace(marker, block + marker, 1) if marker in p["html"] else p["html"] + block
     genres = sorted({p["genres"][0] for p in posts})  # a book is filed under its first genre
     groups = [(g, [p for p in posts if p["genres"][0] == g]) for g in genres]
     tags = sorted({t for p in posts for t in p["tags"]}, key=str.lower)

@@ -18,6 +18,7 @@ tags:
 - Court Intrigue
 - Romance
 - Sequel
+series_id: throne-of-glass
 ---
 
 *This is book two of the Throne of Glass series. Nothing below reveals how book one ends, but it assumes you've read it. If you haven't, start with [our review of Throne of Glass](throne-of-glass.html).*
