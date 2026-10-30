@@ -1,0 +1,23 @@
+name: Throne of Glass
+main:
+  - {title: Throne of Glass, slug: throne-of-glass}
+  - {title: Crown of Midnight, slug: crown-of-midnight}
+  - {title: Heir of Fire, slug: heir-of-fire}
+  - {title: Queen of Shadows, slug: queen-of-shadows}
+  - {title: Empire of Storms, slug: empire-of-storms}
+  - {title: Tower of Dawn, slug: tower-of-dawn}
+  - {title: Kingdom of Ash, slug: kingdom-of-ash}
+extras:
+  - title: The Assassin's Blade
+    slug: the-assassins-blade
+    read_after: crown-of-midnight   # author's suggested order; positions this book on the home page
+    text: >-
+      There is also a prequel collection, {link}, made up of five novellas set before the first book. Even though it
+      happens earlier in the story, the author's suggested order, which most fan guides repeat, is to read it after
+      Crown of Midnight and before Heir of Fire. Reading it first isn't harmful, but you lose some of the mystery
+      around the heroine, so saving it is the better choice.
+    self_text: >-
+      This collection is a prequel to the main series. Even though it happens earlier in the story, the author's
+      suggested order, which most fan guides repeat, is to read it after Crown of Midnight and before Heir of Fire.
+      Reading it first isn't harmful, but you lose some of the mystery around the heroine, so saving it is the better
+      choice.

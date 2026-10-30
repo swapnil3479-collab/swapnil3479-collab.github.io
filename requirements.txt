@@ -3,3 +3,5 @@ markdown
 pyyaml
 requests
 python-dotenv
+pillow
+edge-tts
