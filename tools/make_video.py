@@ -1,7 +1,7 @@
 """Render an animated, narrated review video (+ thumbnail + YouTube metadata) for a published post.
 
 Usage:
-  make_video.py <slug> [--script .tmp/<slug>_video.json] [--res 1080|720|360] [--voice en-GB-SoniaNeural]
+  make_video.py <slug> [--script .tmp/<slug>_video.json] [--res 1080|720|360] [--voice en-GB-RyanNeural]
                        [--max-seconds N]   (quick low-res preview: --res 360 --max-seconds 20)
 
 Inputs:  content/posts/<slug>.md (title, author, cover, rating...) and a scene script JSON written by the agent
@@ -22,6 +22,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_site import SITE  # noqa: E402
+import art  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"  # system ffmpeg (brew install ffmpeg); the pip-bundled one hung on macOS
@@ -136,6 +137,7 @@ class Video:
         self.f_cap = font("Georgia.ttf", int(38 * k))
         self.f_big = font("Georgia Bold.ttf", int(150 * k))
         self.bg = self._background()
+        self.scrims = self._scrims()
         rnd = random.Random(7)
         self.embers = [(rnd.random(), rnd.random(), rnd.uniform(6, 22), rnd.uniform(2, 6), rnd.uniform(0, 6.28)) for _ in range(70)]
 
@@ -147,6 +149,14 @@ class Video:
             f = y / H
             d.line([(0, y), (W, y)], fill=tuple(int(BG_TOP[i] * (1 - f) + BG_BOT[i] * f) for i in range(3)))
         return img
+
+    def _scrims(self):
+        W, H = self.W, self.H
+        left = Image.linear_gradient("L").rotate(90).resize((W, H)).point(lambda v: int(v * 0.78))  # opaque on the left, clear on the right
+        left_img = Image.new("RGBA", (W, H), (8, 7, 10, 0))
+        left_img.putalpha(left)
+        dim = Image.new("RGBA", (W, H), (8, 7, 10, 135))
+        return {"left": left_img, "dim": dim}
 
     def frame(self, t):
         fr = self.bg.copy()
@@ -191,6 +201,20 @@ class Video:
             paste(fr, sh, (cx - 20, cy - 20), ramp(t, 0.1, 1.0))
             paste(fr, c.convert("RGBA"), (cx, cy + int((1 - ramp(t, 0.1, 1.0)) * 40 * k)), ramp(t, 0.1, 1.0))
         return fn
+
+    def s_art(self, sc, dur):
+        k = self.k
+        label = text_layer(sc["label"], self.f_tag, TEXT, 900 * k) if sc.get("label") else None
+
+        def fn(fr, t, dur):
+            if not label:
+                return
+            o = min(ramp(t, 0.4, 0.6), 1 - ramp(t, dur - 1.2, 0.6))
+            ImageDraw.Draw(fr).rectangle([int(110 * k), int(86 * k), int(116 * k), int(86 * k + label.height)], fill=tuple(int(c * o) for c in ACCENT))
+            paste(fr, label, (int(134 * k), int(86 * k)), o)
+        return fn
+
+    s_scale = s_art
 
     def _heading(self, sc):
         return text_layer(sc["heading"], self.f_h1, ACCENT, self.W * 0.8)
@@ -259,6 +283,8 @@ class Video:
                 d.polygon(pts, outline=(70, 64, 58), width=max(2, int(4 * k)))
                 if i < rating and s > 0:
                     d.polygon(star_points(cx, cy, r * (0.6 + 0.4 * s)), fill=ACCENT)
+                    art.burst(fr, cx, cy, t - (0.5 + i * 0.35), k)
+                    d = ImageDraw.Draw(fr)
             paste(fr, label, (int((self.W - label.width) / 2), int(self.H * 0.52)), ramp(t, 0.5 + rating * 0.35, 0.6))
             if gr:
                 paste(fr, gr, (int((self.W - gr.width) / 2), int(self.H * 0.52 + label.height + 20 * k)), ramp(t, 2.4, 0.7))
@@ -353,7 +379,7 @@ def main():
 
     post = load_post(a.slug)
     script = json.loads(Path(a.script or ROOT / ".tmp" / f"{a.slug}_video.json").read_text())
-    voice = a.voice or script.get("voice", "en-GB-SoniaNeural")
+    voice = a.voice or script.get("voice", "en-GB-RyanNeural")
     work = ROOT / ".tmp" / "videos" / a.slug
     cache = ROOT / ".tmp" / "video_cache"
     work.mkdir(parents=True, exist_ok=True)
@@ -384,6 +410,11 @@ def main():
 
     # 3. frames -> ffmpeg
     vid = Video(a.res, post, script, cover, total)
+    arts = []
+    for sc in scenes:
+        name = sc.get("art") or ("scale" if sc["type"] == "scale" else None)
+        kw = {"pros": sc.get("pros", []), "cons": sc.get("cons", [])} if name == "scale" else {}
+        arts.append(art.build(name, vid.W, vid.H, vid.k, **kw) if name else None)
     fns = [(sc, vid.scene_fn(sc, sc["dur"]), vid.caption_layers(sc["narration"])) for sc in scenes]
     out = work / f"{a.slug}{'_preview' if a.max_seconds else ''}.mp4"
     enc = subprocess.Popen([FFMPEG, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{vid.W}x{vid.H}", "-r", str(FPS), "-i", "-", "-i", str(audio),
@@ -395,7 +426,14 @@ def main():
         si = max(j for j, s in enumerate(scenes) if s["start"] <= t)
         sc, fn, caps = fns[si]
         lt = t - sc["start"]
-        fr = vid.frame(t)
+        scene_art = arts[si]
+        if scene_art:
+            fr = scene_art.frame(lt, sc["dur"]).convert("RGB")
+            scrim = {"title": "left", "outro": "dim", "rating": "dim"}.get(sc["type"])
+            if scrim:
+                fr.paste(vid.scrims[scrim], (0, 0), vid.scrims[scrim])
+        else:
+            fr = vid.frame(t)
         fn(fr, lt, sc["dur"])
         # caption timed proportionally to sentence length across the narration window
         nar_t = lt - LEAD

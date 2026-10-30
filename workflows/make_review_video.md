@@ -9,12 +9,12 @@ Turn a published review into a short, animated, narrated, spoiler-free video plu
 ## Requirements (one-time)
 - `brew install ffmpeg` (the pip-bundled ffmpeg hung on this Mac).
 - `.venv/bin/pip install -r requirements.txt` (Pillow, edge-tts, etc.).
-- Narration uses edge-tts (free Microsoft online voices, needs internet; falls back to macOS `say`). Default voice `en-GB-SoniaNeural`; change with `--voice`.
+- Narration uses edge-tts (free Microsoft online voices, needs internet; falls back to macOS `say`). Default voice `en-GB-RyanNeural` (male; other male options: en-US-AndrewNeural, en-US-GuyNeural, en-GB-ThomasNeural); change with `--voice`.
 
 ## Steps
 1. **Write the scene script** to `.tmp/<slug>_video.json`. Condense the published review; never add new facts, and apply the same spoiler rules as the review (for sequels, nothing that reveals earlier books). Target 2-3 minutes (~300-450 spoken words). Format:
    ```json
-   {"voice": "en-GB-SoniaNeural", "scenes": [
+   {"voice": "en-GB-RyanNeural", "scenes": [
      {"type": "title",    "chapter": "Intro",   "narration": "..."},
      {"type": "points",   "chapter": "Setup",   "heading": "The setup", "bullets": ["short line", "..."], "narration": "..."},
      {"type": "proscons", "chapter": "Review",  "pros": ["..."], "cons": ["..."], "narration": "..."},
